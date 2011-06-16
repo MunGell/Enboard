@@ -13,6 +13,9 @@
 		<script type="text/javascript" src="js/PachubeAPI.js"></script>
 		<script type="text/javascript">
     
+    
+    
+    
 			$(function(){
 				// Tabs
 				$('.tabs').tabs();

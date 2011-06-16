@@ -5,8 +5,8 @@ var Pachube =
 	params: {}, params_control: false,
 	appConf: {}, appConf_control: false,
 	token: "",
-	key: "KX72x8KdR07Zbt9xfETIhFmYK07LYGa17V1-mCQ0iUI",
-	//key: "",
+	//key: "KX72x8KdR07Zbt9xfETIhFmYK07LYGa17V1-mCQ0iUI",
+	keys: "",
 	
 	parseURL: function () 
 	{
@@ -47,10 +47,10 @@ var Pachube =
 			async: false
 		}).responseText;
 	},
-	getKey: function()
+	getKeys: function()
 	{
 		if(!this.appConf_control) this.getAppConf();
-		this.key = this.appConf.system.data[0].key;
+		this.keys = this.appConf.system;
 	},
 	getDatastreamHistory: function(feed, datastream, start, end, interval)
 	{

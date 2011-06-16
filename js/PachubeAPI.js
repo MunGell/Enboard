@@ -2,10 +2,9 @@ var Pachube =
 {
 	conf_pachube_url: "http://api.pachube.com/v2",
 	conf_pachube_apps: "http://beta.apps.pachube.com",
-	params: {}, params_control: false,
-	appConf: {}, appConf_control: false,
+	params: {},
+	appConf: {},
 	token: "",
-	//key: "KX72x8KdR07Zbt9xfETIhFmYK07LYGa17V1-mCQ0iUI",
 	keys: "",
 	
 	parseURL: function () 
@@ -23,33 +22,25 @@ var Pachube =
 		{
 			this.params[decompiled(e[1])] = decompiled(e[2]);
 		}
-		this.params_control = true;
 	},
 	getToken: function()
 	{
-		if(!this.params_control) this.parseURL();
-		this.token = this.params['token'];
+		this.token = params['token'];
 		return this.token;
 	},
 	getAppConf: function()
 	{
-		if(this.token == "") this.getToken();
 		url = this.conf_pachube_apps + "/conf/" + this.token;
 		
 		this.appConf = $.ajax({
 			url: url,
 			dataType: "json",
 			type: "GET",
-			success: function()
-			{
-				this.appConf_control = true;
-			},
 			async: false
 		}).responseText;
 	},
 	getKeys: function()
 	{
-		if(!this.appConf_control) this.getAppConf();
 		this.keys = this.appConf.system;
 	},
 	getDatastreamHistory: function(feed, datastream, start, end, interval)
@@ -73,24 +64,3 @@ var Pachube =
 		}).responseText;
 	}
 }
-
-
-
-/*
-$.ajax('conf_url',{
-  dataType: 'jsonp',
-  success: function(data) {
-     var elect=data.system.electricity[0];
-     var gas=data.system.gas[0];
-     // save ids and key
-     var js={"electricity" : elect, "gas": gas};
-     var saveto="http://www.virtual-techno.com/vtl/pages/average_register.php?token=df0dcc9a4372dbf72a18350a2a18ad000907f07b";
-     $.post(saveto, js, function (d) {
-       var x=$.parseJSON(d);
-       //alert('got back:'+x.result);
-       window.location.href='http://www.virtual-techno.com/vtl/pages/average_config.php?node_id='+x.node_id;
-     });
-  },
-  type: 'get'
-}); // end of outer call
-*/

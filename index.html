@@ -12,30 +12,8 @@
 			$(function(){
 				// Tabs
 				$('.tabs').tabs();
-				
-				date = new Date();
-				today = date.getFullYear() + "-0" + (date.getMonth()+1) + "-" +  date.getDate();
-				alert(today);
-				function showTodayGraph()
-				{
-					data = "";
-					json = Pachube.getDatastreamHistory('25842', '0', today, today, 0);
-					$.each(json.datapoints, function(index, value)
-					{
-						time = value.at.split('T');
-						time[0] = time[0].split('-').join('/');
-						time[1] = time[1].substring(0,8);
-						time = time.join(" ");
-						
-						data += time + "," + value.value;
-						alert(data);
-					});
-				}
-				showTodayGraph();
-				
-				//Pachube.getKey();
-				//alert(Pachube.key);
-				$('#today').append();
+				Pachube.parseURL();
+				alert(Pachube.getToken());
 			});
 		</script>
 		<style type="text/css">

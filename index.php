@@ -1,66 +1,96 @@
-<?php
-include('PachubeAPI.php');
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9"> 
+    <!--[if IE]><script src="js/excanvas.compiled.js"></script><![endif]-->
+		<title>Energy dashboard</title>
+		<link type="text/css" href="css/cupertino/jquery-ui.css" rel="stylesheet" />	
+    <script type="text/javascript" src="http://dygraphs.com/dygraph-combined.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/dygraph.js"></script>
+		<script type="text/javascript" src="js/PachubeAPI.js"></script>
+		<script type="text/javascript">
+    
+			$(function(){
+				// Tabs
+				$('.tabs').tabs();
+				
+				date = new Date();
+				today = date.getFullYear() + "-0" + (date.getMonth()+1) + "-" +  date.getDate();
+				//alert(today);
+				function showTodayGraph()
+				{
+					data = "";
+					json = Pachube.getDatastreamHistory('25842', '0', today, today, 0);
+					$.each(json.datapoints, function(index, value)
+					{
+						time = value.at.split('T');
+						time[0] = time[0].split('-').join('/');
+						time[1] = time[1].substring(0,8);
+						time = time.join(" ");
+						
+						data += time + "," + value.value;
+						alert(data);
+					});
+				}
+				showTodayGraph();
+				
+				//Pachube.getKey();
+				//alert(Pachube.key);
+				$('#today').append();
+			});
+		</script>
+		<style type="text/css">
+			body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
+			#information {height: 200px !important;}
+			#vizualization {height: 400px;}
+		</style>	
+  
 
-$feed = 26601;
-$datastream = 0;
-$user = "MunGell";
+	</head>
+	<body>
+		<h2>Energy Dashboard</h2>
+				<h3><a href="#">Information</a></h3>
+					<div class="tabs">
+						<ul>
+							<li><a href="#main-info">Main</a></li>
+							<li><a href="#on-map">On map</a></li>
+              <li><a href="#around-you">Around You</a></li>
+						</ul>
+						<div id="main-info"></div>
+						<div id="on-map"></div>
+            <div id="around-you"></div>     
+					</div>
+				<h3><a href="#">Visualization</a></h3>
+					<div class="tabs">
+						<ul>
+							<li><a href="#today">Today</a></li>
+                  
+							<li><a href="#week">Last 7 days</a></li>
+							<li><a href="#month">Last 30 days</a></li>
+						</ul>
+						<div id="today"><div id="dashgraph" style="width:480px; height:320px;"></div> </div>     
+						<div id="week"></div>
+						<div id="month"></div>
+					</div>
+          
+        
+  <script type="text/javascript">
+  //Calling Function for the Visualization Graph (Dygraph)
+  g4 = new Dygraph(
+    document.getElementById("dashgraph"),
+    "temperatures.csv",
+    {
+      rollPeriod: 7,
+      showRoller: true,
+      errorBars: true,
+      valueRange: [50,125]
+    }
+  );
+</script>          
+	</body>
+</html>
 
-echo "<h1>Pachube User Application API</h1>";
 
-$pachubeUser = new PachubeUserAPI("-mrsjkwQ8vasVGpCucUl9J8tnRgK4u0f0XWYE1zAVx8", $user);
-
-echo "<h2>getUser(): </h2><br/>";
-echo "<code>" . $pachubeUser->getUser("xml") . "</code><br/>";
-
-echo "<h1>Pachube Feed Application API</h1>";
-
-$pachubeFeed = new PachubeFeedAPI("Hvckn04wjZd0HPLXipdtZgqiFrGEngL9Mcb1rSOiyO4", $feed);
-
-echo "<h2>getFeed(): </h2><br/>";
-echo "<code>" . $pachubeFeed->getFeed("csv") . "</code><br/>";
-
-echo "<h2>updateFeed(): </h2><br/>";
-$data = "0,10";
-echo "<code>" . $pachubeFeed->_debugStatus($pachubeFeed->updateFeed("csv", $data)) . "</code><br/>";
-
-echo "<h2>deleteFeed(): </h2><br/>";
-//echo "<code>" . $pachubeFeed->_debugStatus($pachubeFeed->deleteFeed()) . "</code><br/>";
-echo "<code>This works!</code>";
-
-echo "<h2>getDatastreamsList(): </h2><br/>";
-echo "<code>" . print_r($pachubeFeed->getDatastreamsList()) . "</code><br/>";
-
-echo "<h2>createDatastream(): </h2><br/>";
-$data = "energy,19";
-echo "<code>" . $pachubeFeed->_debugStatus($pachubeFeed->createDatastream("csv", $data)) . " - Works! </code><br/>";
-
-echo "<h2>getDatastream(): </h2><br/>";
-echo "<code>" . $pachubeFeed->getDatastream("json", $datastream) . "</code><br/>";
-
-echo "<h2>updateDatastream(): </h2><br/>";
-$data = "9";
-echo "<code>" . $pachubeFeed->_debugStatus($pachubeFeed->updateDatastream("csv", $datastream, $data)) . "</code><br/>";
-
-echo "<h2>deleteDatastream(): </h2><br/>";
-echo "<code>" . $pachubeFeed->_debugStatus($pachubeFeed->deleteDatastream("energy")) . "</code><br/>";
-
-echo "<h2>getFeedHistory(): </h2><br/>";
-echo "<code>" . $pachubeFeed->getFeedHistory("json", false, false, false, 2) . "</code><br/>";
-
-echo "<h2>getDatastreamHistory(): </h2><br/>";
-echo "<code>" . $pachubeFeed->getDatastreamHistory("json", 0, false, false, false, 2) . "</code><br/>";
-
-echo "<h1>Pachube Datastream Application API</h1>";
-
-$pachubeDatastream = new PachubeDatastreamAPI("djSZB5oH0EyTJuSoYmTAtd0rkKlXx7Jh_vMPuYPGzbc", $feed, $datastream);
-
-echo "<h2>getDatastream(): </h2><br/>";
-echo "<code>" . $pachubeDatastream->getDatastream("json") . "</code><br/>";
-
-echo "<h2>updateDatastream(): </h2><br/>";
-$data = "9";
-echo "<code>" . $pachubeDatastream->_debugStatus($pachubeDatastream->updateDatastream("csv", $data)) . "</code><br/>";
-
-echo "<h2>getDatastreamHistory(): </h2><br/>";
-echo "<code>" . $pachubeDatastream->getDatastreamHistory("json", false, false, false, 2) . "</code><br/>";
-?>

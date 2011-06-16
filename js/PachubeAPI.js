@@ -25,7 +25,7 @@ var Pachube =
 	},
 	getToken: function()
 	{
-		this.token = params['token'];
+		this.token = this.params['token'];
 		return this.token;
 	},
 	getAppConf: function()

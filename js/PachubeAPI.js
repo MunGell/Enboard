@@ -28,20 +28,20 @@ var Pachube =
 		this.token = this.params['token'];
 		return this.token;
 	},
-	getAppConf: function()
+	getAppConf: function(sfunction)
 	{
 		url = this.conf_pachube_apps + "/conf/" + this.token;
-		
-		this.appConf = $.ajax({
+		$.ajax({
 			url: url,
-			dataType: "json",
-			type: "GET",
-			async: false
-		}).responseText;
+			dataType: 'jsonp',
+			success: sfunction,
+			async: false,
+			type: "GET"
+		});
 	},
 	getKey: function(key)
 	{
-		this.key = this.appConf.system[key].key;
+		this.key = this.appConf[key]['key'];
 	},
 	getDatastreamHistory: function(feed, datastream, start, end, interval)
 	{

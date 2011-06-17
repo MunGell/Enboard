@@ -1,13 +1,10 @@
 <?php
 require('lib/PachubeAPI.php');
 
-if(isset($_GET['token']) && $token != '')
+if(isset($_GET['feed']) && isset($_GET['key']))
 {
-	//$config = getConfig($_GET['token']);
-	//$key = $config->
-	//$Pachube = 
+	echo $_GET['key'];
 }
-
 ?>
 <!DOCTYPE html>
 <html>

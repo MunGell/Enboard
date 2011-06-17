@@ -2,50 +2,40 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-		<title>Energy dashboard</title>
-		<link type="text/css" href="css/cupertino/jquery-ui.css" rel="stylesheet" />	
+		<title>Energy dashboard - Loading...</title>	
 		<script type="text/javascript" src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="js/dygraph.js"></script>
 		<script type="text/javascript" src="js/PachubeAPI.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				// Tabs
-				$('.tabs').tabs();
 				Pachube.parseURL();
-				Pachube.getToken();
-				Pachube.getAppConf();
-				alert(Pachube.getKey('feed'));
+				var token = Pachube.getToken();
+				Pachube.getAppConf(function(data)
+				{
+					feed_id = data.system.feed[0].feed_id;
+					feed_key = data.system.feed[0].key;
+					window.location.href='http://pachube.codeblog.ru/Enboard/main.php?feed=' + feed_id + '&key=' + feed_key;
+				});
 			});
 		</script>
 		<style type="text/css">
-			body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
-			#information {height: 200px !important;}
-			#vizualization {height: 400px;}
+			.message 
+			{
+				font-family: Verdana;
+				font-size: 14px;
+				display: block;
+				border: 5px solid #cccccc;
+				width: 250px;
+				height: 60px;
+				text-align: center;
+				vertical-align: middle;
+				margin: auto;
+				margin-top: 200px;
+				padding-top: 40px;
+			}
 		</style>	
 	</head>
 	<body>
-		<h2>Energy Dashboard</h2>
-				<h3><a href="#">Information</a></h3>
-					<div class="tabs">
-						<ul>
-							<li><a href="#main-info">Main</a></li>
-							<li><a href="#on-map">On map</a></li>
-						</ul>
-						<div id="main-info"></div>
-						<div id="on-map"></div>
-					</div>
-				<h3><a href="#">Vizualization</a></h3>
-					<div class="tabs">
-						<ul>
-							<li><a href="#today">Today</a></li>
-							<li><a href="#week">Last 7 days</a></li>
-							<li><a href="#month">Last 30 days</a></li>
-						</ul>
-						<div id="today"></div>
-						<div id="week"></div>
-						<div id="month"></div>
-					</div>
+		<div class="message">Energy dashboard loading...</div>
 	</body>
 </html>
 

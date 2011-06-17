@@ -39,9 +39,9 @@ var Pachube =
 			async: false
 		}).responseText;
 	},
-	getKeys: function()
+	getKey: function(key)
 	{
-		this.keys = this.appConf.system;
+		this.key = this.appConf.system[key].key;
 	},
 	getDatastreamHistory: function(feed, datastream, start, end, interval)
 	{

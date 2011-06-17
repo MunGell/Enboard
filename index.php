@@ -1,3 +1,14 @@
+<?php
+require('lib/PachubeAPI.php');
+
+if(isset($_GET['token']) && $token != '')
+{
+	//$config = getConfig($_GET['token']);
+	//$key = $config->
+	//$Pachube = 
+}
+
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,9 +24,7 @@
 				// Tabs
 				$('.tabs').tabs();
 				Pachube.parseURL();
-				Pachube.getToken();
-				Pachube.getAppConf();
-				alert(Pachube.getKey('feed'));
+				alert(Pachube.getToken());
 			});
 		</script>
 		<style type="text/css">

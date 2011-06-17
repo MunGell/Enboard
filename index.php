@@ -11,10 +11,9 @@
 		<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/dygraph.js"></script>
 		<script type="text/javascript" src="js/PachubeAPI.js"></script>
-		<script type="text/javascript">
-    
-    
-    
+    <script type="text/javascript" src="js/map.js"></script> 
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript">    
     
 			$(function(){
 				// Tabs
@@ -44,16 +43,18 @@
 				//alert(Pachube.key);
 				$('#today').append();
 			});
+
 		</script>
 		<style type="text/css">
 			body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
 			#information {height: 200px !important;}
 			#vizualization {height: 400px;}
-		</style>	
+      
+		</style>
   
 
 	</head>
-	<body>
+	<body onload="initialize()">
 		<h2>Energy Dashboard</h2>
 				<h3><a href="#">Information</a></h3>
 					<div class="tabs">
@@ -62,15 +63,22 @@
 							<li><a href="#on-map">On map</a></li>
               <li><a href="#around-you">Around You</a></li>
 						</ul>
-						<div id="main-info"></div>
-						<div id="on-map"></div>
+						<div id="main-info"> <img src="images/main.jpg"><br><img src="images/tree.jpg"> </div>
+						<div id="on-map">
+<div> 
+  <input id="latlng" type="textbox" value="40.714224,-73.961452"> 
+</div> 
+<div> 
+  <input type="button" value="Reverse Geocode" onclick="codeLatLng()"> 
+</div> 
+<div id="map_canvas" style="height:400px;width:500px;"></div>
+            </div>
             <div id="around-you"></div>     
 					</div>
 				<h3><a href="#">Visualization</a></h3>
 					<div class="tabs">
 						<ul>
 							<li><a href="#today">Today</a></li>
-                  
 							<li><a href="#week">Last 7 days</a></li>
 							<li><a href="#month">Last 30 days</a></li>
 						</ul>

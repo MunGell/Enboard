@@ -1,10 +1,20 @@
 <?php
+session_start();
 require('lib/PachubeAPI.php');
 
 if(isset($_GET['feed']) && isset($_GET['key']))
 {
-	echo $_GET['key'];
+	$_SESSION['feed_id'] = $_GET['feed']; 
+	$_SESSION['key']	 = $_GET['key'];
+	header("Location: main.php");
 }
+elseif(!isset($_SESSION['feed_id']) && !isset($_SESSION['key']))
+{
+	echo "Direct connection denied!";
+	exit;
+}
+
+$PachubeFeed = new PachubeFeedAPI($_SESSION['key'], $_SESSION['feed_id']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,8 +30,6 @@ if(isset($_GET['feed']) && isset($_GET['key']))
 			$(function(){
 				// Tabs
 				$('.tabs').tabs();
-				Pachube.parseURL();
-				alert(Pachube.getToken());
 			});
 		</script>
 		<style type="text/css">
@@ -38,7 +46,11 @@ if(isset($_GET['feed']) && isset($_GET['key']))
 							<li><a href="#main-info">Main</a></li>
 							<li><a href="#on-map">On map</a></li>
 						</ul>
-						<div id="main-info"></div>
+						<div id="main-info">
+							<?php
+								print_r($PachubeFeed->getDatastreamsList());
+							?>
+						</div>
 						<div id="on-map"></div>
 					</div>
 				<h3><a href="#">Vizualization</a></h3>
